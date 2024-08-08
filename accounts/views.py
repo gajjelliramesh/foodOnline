@@ -37,8 +37,10 @@ def registerUser(request):
             user.role = User.CUSTOMER
             user.save()
             
+            mail_subject = "Please activate your account"
+            email_template = 'accounts/emails/account_verification_email.html'
             #Send verification email
-            send_verification_email(request, user)
+            send_verification_email(request, user, mail_subject, email_template)
             messages.success(request, "Your account has been registered successfully!")
             return redirect("registerUser")
         else:
@@ -71,7 +73,9 @@ def registerVendor(request):
             user_profile = UserProfile.objects.get(user=user)
             vendor.user_profile =  user_profile
             vendor.save()
-            send_verification_email(request, user)
+            mail_subject = "Please activate your account"
+            email_template = 'accounts/emails/account_verification_email.html'
+            send_verification_email(request, user, mail_subject, email_template)
             messages.success(request, "Your account has been registered successfully! PLease wait for the approval.")
             return redirect("registerVendor")
         else:
